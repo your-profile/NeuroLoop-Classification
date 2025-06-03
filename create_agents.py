@@ -4,6 +4,11 @@ import gymnasium as gym
 from networks.ddpg_fetchrobot import Agent as DDPG
 from copy import deepcopy as dc
 
+"""
+This file contains functions to create learning agents for each domain.
+Each function loads a pre-trained model from a file and returns an agent instance.
+"""
+
 
 def create_lunarlander_agent(file):
     agent = DQN(
