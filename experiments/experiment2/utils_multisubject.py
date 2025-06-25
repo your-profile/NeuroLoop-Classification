@@ -19,7 +19,6 @@ def read_files(participant_list, source_folder_1, conditions):
                 if filename.startswith('0{}'.format(participant)) or filename.startswith('00{}'.format(participant)):
                     if filename[4:6] == condition:
                         # Get full file path
-                        # print(participant)
                         demo_path = os.path.join(source_folder_1, filename)
                         df = pd.read_csv(demo_path, index_col=0)
                         participant_data[str(participant)+condition] = df
