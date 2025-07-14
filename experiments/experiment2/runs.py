@@ -1,9 +1,9 @@
 import numpy as np
 
 multi_subject_experiments = {
-    0: {"train_list": [2, 5, 7, 8, 9, 11, 13, 14, 15, 18, 19, 20, 21, 23], "train_conditions": ["FW"], "experiment_name": "multiSubject"}, 
-    
     1: {"train_list": [3, 6, 9, 14, 16, 18, 19, 24], "train_conditions": ["FP"], "experiment_name": "multiSubject"}, 
+
+    2: {"train_list": [2, 5, 7, 8, 9, 11, 13, 14, 15, 18, 19, 20, 21, 23], "train_conditions": ["FW"], "experiment_name": "multiSubject"}, 
     
     3: {"train_list": [3, 5, 6, 7, 8, 10, 12, 20, 23, 24, 25], "train_conditions": ["LW"], "experiment_name": "multiSubject"}, 
 
