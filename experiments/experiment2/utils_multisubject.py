@@ -86,9 +86,13 @@ def read_files(participant_list, source_folder_1, conditions):
     for filename in os.listdir(source_folder_1):
         for condition in conditions:
             for participant in participant_list:
-                # print(participant)
-                if filename.startswith('0{}'.format(participant)) or filename.startswith('00{}'.format(participant)):
+                if participant < 10:
+                    participant = '00{}'.format(participant)
+                else:
+                    participant = '0{}'.format(participant)
+                if (filename.startswith('{}'.format(participant))):
                     if filename[4:6] == condition:
+                        print(filename)
                         # Get full file path
                         demo_path = os.path.join(source_folder_1, filename)
                         df = pd.read_csv(demo_path, index_col=0)
