@@ -1,1 +1,0 @@
-There is an extra LW condition on line 7 for all classifier results but not finetuning
