@@ -14,6 +14,17 @@ import time
 import torch.nn.functional as F
 from torch import from_numpy
 import gymnasium as gym
+from scipy.special import rel_entr
+import gymnasium_robotics
+import mujoco
+print("Mujoco version:", mujoco.__version__)
+
+
+# import mujoco
+
+import gymnasium as gym
+print([e for e in gym.envs.registry.keys() if "Fetch" in e])
+
 
 START_WAIT = 2000 #Time participants wait at the Enter Screen
 EPISODE_WAIT = 1500
@@ -21,6 +32,7 @@ EPISODE_WAIT = 1500
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser()
+
 
 pygame.init()
 
@@ -52,9 +64,9 @@ args = parser.parse_args()
 
 def environment(condition):
     if condition == 0:
-        return gym.make('FetchPickAndPlace-v2', render_mode = "human", max_episode_steps=75)
+        return gym.make('FetchPickAndPlace-v4', render_mode = "human", max_episode_steps=75)
     if condition == 1:
-        return gym.make('FetchPickAndPlace-v2', render_mode = "human", max_episode_steps=650)
+        return gym.make('FetchPickAndPlace-v4', render_mode = "human", max_episode_steps=650)
 
     if condition == 2:
         return gym.make('FetchPush-v2', render_mode = "human", max_episode_steps=75)
@@ -213,6 +225,7 @@ def watch(policies, condition:int):
     last_time = time.time()
 
     print(last_time-first_time, " seconds long")
+    env.close()
     
 
 def play(condition:int):
@@ -318,6 +331,7 @@ def play(condition:int):
 
     last_time = time.time()
     print(last_time-first_time, " seconds long")
+    env.close()
 
 
 
@@ -341,7 +355,6 @@ def softmax(values):
     return vals
 
 def KLDivergence(P, Q):
-    from scipy.special import rel_entr
 
     return sum(rel_entr(P, Q))
     
@@ -372,7 +385,7 @@ def create_agent(file):
               k_future=k_future,
               env=dc(ENV))
     
-    checkpoint = torch.load("policies/RobotPolicies/FetchPickAndPlace1.pth")
+    checkpoint = torch.load("policies/RobotPolicies/FetchPickAndPlace1.pth", weights_only=False)
     actor_state_dict = checkpoint["actor_state_dict"]
     agent.actor.load_state_dict(actor_state_dict)
     state_normalizer_mean = checkpoint["state_normalizer_mean"]
