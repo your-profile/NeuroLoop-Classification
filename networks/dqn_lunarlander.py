@@ -1,21 +1,9 @@
-import pandas as pd
-import argparse
 import torch
-from games.lunar_lander import LunarLander
-from games.flappy_bird import FlappyBirdEnv
-import os
 import torch.nn as nn
 import numpy as np
-import pygame
-import pickle
-import datetime
 import torch.optim as optim
-from collections import deque
-import time
-import csv
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 
 #Q NETWORK ARCHITECTURE
 class DeepQNetwork(nn.Module):
@@ -47,13 +35,10 @@ class DQN():
         self.optimizer = optim.Adam(self.policy_net.parameters(), lr=lr)
         self.criterion = nn.MSELoss()
 
-        # REplay Buffer
-        # self.memory = PrioritizedReplayBuffer(n_actions, mem_size, batch_size)
         self.counter = 0
 
     def chooseAction(self, state, epsilon, play=None):
         state = torch.from_numpy(state).float().unsqueeze(0).to(device)
-        # print(state)
 
         self.policy_net.eval()
         with torch.no_grad():
