@@ -13,11 +13,11 @@ multi_subject_experiments = {
     
     6: {"train_list": [3, 7, 8, 9, 10, 12, 14, 15, 17, 20, 21, 23, 24], "train_conditions": ["RP"], "experiment_name": "multiSubject"},
 
-    7: {"train_list": [2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], "train_conditions": ["FW", "LW", "RW"], "experiment_name": "multiSubjectPassive"}, #Later experiments
+    7: {"train_list": [2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], "train_conditions": ["FW", "LW", "RW"], "experiment_name": "multiSubjectPassive"}, 
     
-    8: {"train_list": [2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], "train_conditions": ["FP", "LP", "RP"], "experiment_name": "multiSubjectActive"}, #Later experiments
+    8: {"train_list": [2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], "train_conditions": ["FP", "LP", "RP"], "experiment_name": "multiSubjectActive"}, 
 
-    9: {"train_list": [2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], "train_conditions": ["FW", "LW", "RW", "FP", "LP", "RP"], "experiment_name": "multiSubjectAll"}, #Later experiments
+    9: {"train_list": [2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], "train_conditions": ["FW", "LW", "RW", "FP", "LP", "RP"], "experiment_name": "multiSubjectAll"}, 
 
 }
 
