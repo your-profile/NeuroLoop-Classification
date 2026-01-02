@@ -19,65 +19,120 @@ def from_tensor(x):
     except:
         return x
     
-def create_window_df(participant_df, window_size:int, step_size:int, features, labels):
-    data = {}
+# def create_window_df(participant_df, window_size:int, step_size:int, features, labels):
+#     data = {}
 
-    # Add features
-    for feature in features:
-        data[feature] = participant_df[feature]
+#     # Add features
+#     for feature in features:
+#         data[feature] = participant_df[feature]
     
-    # Add labels
-    print(labels)
+#     # Add labels
+#     print(labels)
+#     for label in labels:
+#         data[label] = participant_df[label]
+
+#     df = pd.DataFrame(data)
+
+#     windowed_data = []
+#     windowed_labels = []
+#     slope_values = []
+#     intercept_values = []
+#     start_timestamps = []
+#     end_timestamps = []
+
+#     for start in range(0, len(df) - window_size + 1, step_size):
+#         data_dict = {}
+#         end = start + window_size
+#         window = df.iloc[start:end] 
+
+#         last_discrete_label = window["discrete_optimal"].iloc[-1]
+#         last_continuous_label = window['continuous_optimal'].iloc[-1]
+#         last_binary_label = window['binary_optimal'].iloc[-1]
+
+#         window = window.drop(columns=['continuous_optimal', 'binary_optimal', 'discrete_optimal'])
+
+#         # Calculate window features
+#         mean_values = window.mean(axis=0).to_numpy(dtype=float)
+#         std_values = window.std(axis=0).to_numpy(dtype=float)
+#         slope_values = np.array([np.polyfit(window[feature], np.arange(window_size), 1)[0] for feature in features], dtype=float)
+#         intercept_values = np.array([np.polyfit(window[feature], np.arange(window_size), 1)[1] for feature in features], dtype=float)
+#         kurtosis_values = stats.kurtosis(window, axis=0, fisher=True)
+#         skewdness_values = stats.skew(window, axis=0)
+
+#         # Add features
+#         for i, feature in enumerate(features):
+#             for j, stat in feature_map.items():
+#                 data_dict[f"{feature}_{stat}"] = np.array([mean_values[i], std_values[i], slope_values[i], intercept_values[i], kurtosis_values[i], skewdness_values[i]])[j]
+
+#         # Add start and end timestamps
+#         start_timestamps.append(participant_df['time'].iloc[start])
+#         end_timestamps.append(participant_df['time'].iloc[end - 1])
+
+#         windowed_data.append(data_dict)
+#         windowed_labels.append({'discrete_label': last_discrete_label, 'continuous_label': last_continuous_label, 'binary_label': last_binary_label})
+
+#     windowed_data = pd.DataFrame(windowed_data)
+#     windowed_labels_df = pd.DataFrame(windowed_labels)
+
+#     # Add start and end timestamps to the windowed data
+#     windowed_data['start_timestamp'] = start_timestamps
+#     windowed_data['end_timestamp'] = end_timestamps
+
+#     return windowed_data, windowed_labels_df
+
+def create_window_df(participant_df, window_size:int, step_size:int, features, labels):
+    feature_map = {0:"Mean",
+                1:"Std",
+                2:"Slope",
+                3:"Intercept",
+                4:"Kurtosis",
+                5:"Skewness"
+                }
+    data = {f: participant_df[f] for f in features}
     for label in labels:
         data[label] = participant_df[label]
-
     df = pd.DataFrame(data)
 
-    windowed_data = []
-    windowed_labels = []
-    slope_values = []
-    intercept_values = []
-    start_timestamps = []
-    end_timestamps = []
+    windowed_data, windowed_labels = [], []
+    start_timestamps, end_timestamps = [], []
 
     for start in range(0, len(df) - window_size + 1, step_size):
-        data_dict = {}
+        label_idx = -1
+        
         end = start + window_size
-        window = df.iloc[start:end] 
+        window = df.iloc[start:end].copy()
 
-        last_discrete_label = window["discrete_optimal"].iloc[-1]
-        last_continuous_label = window['continuous_optimal'].iloc[-1]
-        last_binary_label = window['binary_optimal'].iloc[-1]
+        # extract labels at the end of window
+        last_discrete_label = window["discrete_optimal"].iloc[label_idx]
+        last_continuous_label = window["continuous_optimal"].iloc[label_idx]
+        last_binary_label = window["binary_optimal"].iloc[label_idx]
+        window = window.drop(columns=['continuous_optimal','binary_optimal','discrete_optimal'])
 
-        window = window.drop(columns=['continuous_optimal', 'binary_optimal', 'discrete_optimal'])
+        mean_values = window.mean(axis=0).to_numpy(float)
+        std_values = window.std(axis=0).to_numpy(float)
+        slopes = np.array([np.polyfit(np.arange(window_size), window[f], 1)[0] for f in features], dtype=float)
+        intercepts = np.array([np.polyfit(np.arange(window_size), window[f], 1)[1] for f in features], dtype=float)
+        kurtosis_values = stats.kurtosis(window, axis=0, fisher=True, nan_policy='omit')
+        skewness_values = stats.skew(window, axis=0, nan_policy='omit')
 
-        # Calculate window features
-        mean_values = window.mean(axis=0).to_numpy(dtype=float)
-        std_values = window.std(axis=0).to_numpy(dtype=float)
-        slope_values = np.array([np.polyfit(window[feature], np.arange(window_size), 1)[0] for feature in features], dtype=float)
-        intercept_values = np.array([np.polyfit(window[feature], np.arange(window_size), 1)[1] for feature in features], dtype=float)
-        kurtosis_values = stats.kurtosis(window, axis=0, fisher=True)
-        skewdness_values = stats.skew(window, axis=0)
+        data_dict = {}
+        for i, f in enumerate(features):
+            for idx, stat_name in feature_map.items():
+                data_dict[f"{f}_{stat_name}"] = [mean_values[i], std_values[i], slopes[i], intercepts[i], kurtosis_values[i], skewness_values[i]][idx]
 
-        # Add features
-        for i, feature in enumerate(features):
-            for j, stat in feature_map.items():
-                data_dict[f"{feature}_{stat}"] = np.array([mean_values[i], std_values[i], slope_values[i], intercept_values[i], kurtosis_values[i], skewdness_values[i]])[j]
-
-        # Add start and end timestamps
+        windowed_data.append(data_dict)
+        windowed_labels.append({
+            'discrete_label': last_discrete_label,
+            'continuous_label': last_continuous_label,
+            'binary_label': last_binary_label
+        })
         start_timestamps.append(participant_df['time'].iloc[start])
         end_timestamps.append(participant_df['time'].iloc[end - 1])
 
-        windowed_data.append(data_dict)
-        windowed_labels.append({'discrete_label': last_discrete_label, 'continuous_label': last_continuous_label, 'binary_label': last_binary_label})
-
     windowed_data = pd.DataFrame(windowed_data)
     windowed_labels_df = pd.DataFrame(windowed_labels)
-
-    # Add start and end timestamps to the windowed data
     windowed_data['start_timestamp'] = start_timestamps
     windowed_data['end_timestamp'] = end_timestamps
-
     return windowed_data, windowed_labels_df
     
 def read_files(participant_list, source_folder_1, conditions):
