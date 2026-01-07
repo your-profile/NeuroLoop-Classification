@@ -7,7 +7,6 @@ import numpy as np
 import pygame
 import pickle
 import datetime
-import torch.optim as optim
 from torch.optim import Adam
 from copy import deepcopy as dc
 import time
@@ -15,7 +14,6 @@ import torch.nn.functional as F
 from torch import from_numpy
 import gymnasium as gym
 from scipy.special import rel_entr
-import gymnasium_robotics
 import mujoco
 print("Mujoco version:", mujoco.__version__)
 

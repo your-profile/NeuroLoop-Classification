@@ -10,9 +10,7 @@ import pygame
 import pickle
 import datetime
 import torch.optim as optim
-from collections import deque
 import time
-import csv
 
 START_WAIT = 20000 #Time participants wait at the Enter Screen
 EPISODE_WAIT = 1500
