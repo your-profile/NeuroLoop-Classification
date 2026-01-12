@@ -1,6 +1,6 @@
 # NeuroLoop Classification
 
-This repository contains the source code for:
+See the aaai26 branch to see the repository containing source code for:
 
 Santaniello, J., Russell, M., Jiang, B., Sassaroli, D., Jacob, R., & Sinapov, J. (2026).  
 **Towards Reinforcement Learning from Neural Feedback: Mapping fNIRS Signals to Agent Performance.**  
