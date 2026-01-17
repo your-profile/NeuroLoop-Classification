@@ -84,7 +84,7 @@ Participants interact with some **domain** through some **task**. Domains are on
 
 ## Labeling
 
-To be documented on 01/05/26.
+To be documented on 02/01/26.
 
 ## Ethics and Consent
 
