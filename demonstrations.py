@@ -3,7 +3,7 @@ import pygame
 import pickle
 
 """
-NAME
+Julia Santaniello
 Started: 06/01/23
 Last Updated: 12/21/23
 

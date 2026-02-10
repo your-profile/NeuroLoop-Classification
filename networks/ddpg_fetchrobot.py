@@ -28,7 +28,7 @@ class Actor(nn.Module):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
-        output = torch.tanh(self.output(x))  # TODO add scale of the action
+        output = torch.tanh(self.output(x))
 
         return output
 
@@ -66,7 +66,7 @@ class Agent:
                  actor_lr=1e-3,
                  critic_lr=1e-3,
                  gamma=0.98):
-        # self.device = device("cpu")
+        
         self.n_states = n_states
         self.n_actions = n_actions
         self.n_goals = n_goals
@@ -77,8 +77,6 @@ class Agent:
 
         self.actor = Actor(self.n_states, n_actions=self.n_actions, n_goals=self.n_goals).to(device)
         self.critic = Critic(self.n_states, action_size=self.action_size, n_goals=self.n_goals).to(device)
-        # self.sync_networks(self.actor)
-        # self.sync_networks(self.critic)
         self.actor_target = Actor(self.n_states, n_actions=self.n_actions, n_goals=self.n_goals).to(device)
         self.critic_target = Critic(self.n_states, action_size=self.action_size, n_goals=self.n_goals).to(device)
         self.init_target_networks()
@@ -86,8 +84,6 @@ class Agent:
         self.gamma = gamma
 
         self.capacity = capacity
-        # self.memory = Memory(self.capacity, self.k_future, self.env)
-
         self.batch_size = batch_size
         self.actor_lr = actor_lr
         self.critic_lr = critic_lr
@@ -129,7 +125,6 @@ class Agent:
         
 import threading
 import numpy as np
-# from mpi4py import MPI
 
 
 class Normalizer:
@@ -148,13 +143,11 @@ class Normalizer:
         # get the mean and std
         self.mean = np.zeros(self.size, np.float32)
         self.std = np.ones(self.size, np.float32)
-        # thread locker
         self.lock = threading.Lock()
 
     # update the parameters of the normalizer
     def update(self, v):
         v = v.reshape(-1, self.size)
-        # do the computing
         with self.lock:
             self.local_sum += v.sum(axis=0)
             self.local_sumsq += (np.square(v)).sum(axis=0)
@@ -176,9 +169,8 @@ class Normalizer:
             self.local_count[...] = 0
             self.local_sum[...] = 0
             self.local_sumsq[...] = 0
-        # sync the stats
         sync_sum, sync_sumsq, sync_count = self.sync(local_sum, local_sumsq, local_count)
-        # update the total stuff
+
         self.total_sum += sync_sum
         self.total_sumsq += sync_sumsq
         self.total_count += sync_count
