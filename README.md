@@ -84,8 +84,6 @@ Participants interact with some **domain** through some **task**. Domains are on
 
 ## Labeling
 
-To be documented on 02/01/26.
-
 ## Ethics and Consent
 
 This study was approved by the Institutional Review Board (IRB) of Tufts University's Social, Behavioral, and Educational Research Office (SBER) under protocol IRB-00005080, and all participants provided informed consent.
