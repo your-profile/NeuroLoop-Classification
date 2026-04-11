@@ -1,0 +1,10 @@
+Box2D==2.3.10
+Box2D==2.3.10
+gymnasium==1.2.3
+gymnasium_robotics==1.4.2
+mujoco==3.5.0
+numpy==2.4.4
+pandas==3.0.2
+pygame==2.6.1
+scipy==1.17.1
+torch==2.10.0

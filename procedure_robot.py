@@ -13,8 +13,12 @@ import time
 import torch.nn.functional as F
 from torch import from_numpy
 import gymnasium as gym
+import gymnasium_robotics
 from scipy.special import rel_entr
 import mujoco
+
+gym.register_envs(gymnasium_robotics)
+
 print("Mujoco version:", mujoco.__version__)
 
 
