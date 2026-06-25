@@ -1,4 +1,4 @@
-Box2D==2.3.10
+# Requires Python 3.11-3.13 and the SWIG system package.
 Box2D==2.3.10
 gymnasium==1.2.3
 gymnasium_robotics==1.4.2
