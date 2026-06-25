@@ -1,0 +1,8 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+
+# Procedure output generated during local runs
+data/human-play-demo/
+data/human-watch-demo/

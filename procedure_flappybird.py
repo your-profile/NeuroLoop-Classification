@@ -11,8 +11,6 @@ import datetime
 import torch.optim as optim
 import time
 
-
-
 START_WAIT = 20000 #Time participants wait at the Enter Screen
 EPISODE_WAIT = 1500
 
@@ -38,8 +36,8 @@ if not os.path.exists('data/human-watch-demo/'):
 args = parser.parse_args()
 
 CONDITION_MAP = {
-    0: ['w', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdOptimalPolicy_88"],
-    1: ['p', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdOptimalPolicy_88"]
+    0: ['w', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdPolicies/FlappyBirdOptimalPolicy7"],
+    1: ['p', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdPolicies/FlappyBirdOptimalPolicy7"]
 }
 
 PARTICIPANT_ID = args.PID

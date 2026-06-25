@@ -39,8 +39,8 @@ args = parser.parse_args()
 CONDITION_MAP = {
     0: ['w', LunarLander, "LunarLander", (4,11), "LunarLanderPolicies/LLPolicy100_1"],
     1: ['p', LunarLander, "LunarLander", (4,11), "LunarLanderPolicies/LLPolicy96"],
-    2: ['w', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdOptimalPolicy_88"],
-    3: ['p', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdOptimalPolicy_88"]
+    2: ['w', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdPolicies/FlappyBirdOptimalPolicy7"],
+    3: ['p', FlappyBirdEnv, "FlappyBird", (2,12), "FlappyBirdPolicies/FlappyBirdOptimalPolicy7"]
 }
 
 PARTICIPANT_ID = args.PID
@@ -343,6 +343,7 @@ def human_play():
         """
         Human can play the game in real time using these keys
         """
+        pygame.event.pump()
         pressed_keys = pygame.key.get_pressed()
 
         if ENVIRONMENT_NAME == "FlappyBird":
@@ -351,10 +352,11 @@ def human_play():
             return 0 #do nothing
         
         else:
-            if pressed_keys[pygame.K_LEFT]: #left
-                return 1
-            elif pressed_keys[pygame.K_UP]: #up
+            # Prioritize boost so holding UP with a turn key still feels responsive.
+            if pressed_keys[pygame.K_UP]: #up
                 return 2
+            elif pressed_keys[pygame.K_LEFT]: #left
+                return 1
             elif pressed_keys[pygame.K_RIGHT]: #right
                 return 3
             return 0 #do nothing

@@ -15,9 +15,9 @@ from typing import TYPE_CHECKING, Optional
 import numpy as np
 import gymnasium as gym
 import random
-from gym import error, spaces
-from gym.error import DependencyNotInstalled
-from gym.utils import EzPickle, colorize
+from gymnasium import error, spaces
+from gymnasium.error import DependencyNotInstalled
+from gymnasium.utils import EzPickle, colorize
 from gymnasium.utils.step_api_compatibility import step_api_compatibility
 import time
 
@@ -32,7 +32,9 @@ try:
         revoluteJointDef,
     )
 except ImportError:
-    raise DependencyNotInstalled("box2d is not installed, run `pip install gym[box2d]`")
+    raise DependencyNotInstalled(
+        "box2d is not installed, run `pip install gymnasium[box2d]`"
+    )
 
 
 if TYPE_CHECKING:
@@ -44,7 +46,7 @@ FPS = 50
 SCALE = 25.0  # affects how fast-paced the game is, forces should be adjusted as well
 
 MAIN_ENGINE_POWER = 25.0
-SIDE_ENGINE_POWER = 0.8
+SIDE_ENGINE_POWER = 1.05
 
 INITIAL_RANDOM = 300.0  # Set 1500 to make game harder
 
@@ -218,7 +220,7 @@ class LunarLander(gym.Env, EzPickle):
         self,
         render_mode: Optional[str] = None,
         continuous: bool = False,
-        gravity: float = -8.0, #-10
+        gravity: float = -5.8,
         enable_wind: bool = False,
         wind_power: float = 15.0, 
         turbulence_power: float = 1.5,
@@ -397,6 +399,7 @@ class LunarLander(gym.Env, EzPickle):
         self.lander: Box2D.b2Body = self.world.CreateDynamicBody(
             position=(VIEWPORT_W / SCALE / 2, initial_y),
             angle=0.0,
+            angularDamping=1.2,
             fixtures=fixtureDef(
                 shape=polygonShape(
                     vertices=[(x / SCALE, y / SCALE) for x, y in LANDER_POLY]
